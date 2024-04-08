@@ -1,5 +1,9 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+// import Link from "next/link";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Header from "./header/page";
+// import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,7 +15,63 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      {/* <Head>
+        <meta charset="utf-8"></meta>
+        <title>
+          Braine Digital Agency Business HTML-5 Template | Homepage 03
+        </title>
+        <Link href="css/bootstrap.css"></Link>
+        <Link href="css/style.css"></Link>
+        <Link href="css/meanmenu.min.css"></Link>
+        <Link href="css/responsive.css"></Link>
+
+        <Link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,600;1,700&amp;display=swap"></Link>
+        <Link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"></Link>
+
+        <Link
+          rel="shortcut icon"
+          href="images/favicon.png"
+          type="image/x-icon"
+        ></Link>
+        <Link rel="icon" href="images/favicon.png" type="image/x-icon"></Link>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+        ></meta>
+      </Head> */}
+      <meta charSet="utf-8" />
+      <title>
+        Braine Digital Agency Business HTML-5 Template | Homepage 01
+      </title>
+      {/* Stylesheets */}
+      <link href="css/bootstrap.css" rel="stylesheet" precedence="default"/>
+      <link href="css/style.css" rel="stylesheet" precedence="default"/>
+      <link href="css/meanmenu.min.css" rel="stylesheet" precedence="default"/>
+      <link href="css/responsive.css" rel="stylesheet" precedence="default"/>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,600;1,700&display=swap"
+        rel="stylesheet"
+        precedence="default"
+      />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+        precedence="default"
+      />
+      <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" precedence="default"/>
+      <link rel="icon" href="images/favicon.png" type="image/x-icon" precedence="default"/>
+      {/* Responsive */}
+      <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+      />
+
+      <body className={inter.className}>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
