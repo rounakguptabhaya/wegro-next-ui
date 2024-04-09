@@ -4,12 +4,23 @@ import WatchList from "@/components/WatchList";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import jwt from 'jsonwebtoken';
+import { alert, defaultModules } from '@pnotify/core';
+import '@pnotify/core/dist/PNotify.css';
+import * as PNotifyMobile from '@pnotify/mobile';
+import '@pnotify/mobile/dist/PNotifyMobile.css';
+import '@pnotify/core/dist/BrightTheme.css';
+
+
+defaultModules.set(PNotifyMobile, {});
+
 
 
 const WatchListPage = () => {
 
   const [companies,setCompanies] = useState([]); 
   const [watchlist, setWatchlist] = useState([]);
+
+  
 
   
   
@@ -31,6 +42,9 @@ const WatchListPage = () => {
     const response = await res.json();
 
     if(response.message === "Success"){
+        alert({
+            text: "Logged in Successfully"
+        });
         setWatchlist(response.watchlist);
     }
   } 
@@ -51,9 +65,18 @@ const WatchListPage = () => {
     const res = await fetch("http://localhost:3000/api/watchlist",postData);
 
     const response = await res.json();
-    const filteredWatchlist = watchlist.filter(company => company.companyId !== companyId);
+
+    if(response.message === "Success"){
+        
+        alert({
+            text: `${response.companyName} deleted from your watchlist successfully.`,
+          });
+
+        const filteredWatchlist = watchlist.filter(company => company.companyId !== companyId);
+        setWatchlist(filteredWatchlist);
+
+    }
     
-    setWatchlist(filteredWatchlist);
 
 
   }
@@ -80,8 +103,13 @@ const WatchListPage = () => {
     console.log("Added company company Id::", response.companyId);
 
     if(response.message != "Success"){
-        alert(response.message);
+        alert({
+            text: `${companyName} already exists in your watchlist`,
+          });
     }else{
+        alert({
+            text: `${companyName} is successfully added in your watchlist.`,
+          });
         setWatchlist(prevWatchlist => [...prevWatchlist, {companyName: companyName, companyId: response.companyId}]);
     }
 

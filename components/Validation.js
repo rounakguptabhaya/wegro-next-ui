@@ -68,7 +68,9 @@ const Validation = (props) => {
                 required={true}
               />
               <Button onClick={handleButtonClick} name="Submit OTP" />
-              <Button onClick={updateOtp} name="Resend OTP" disabled={!resendEnabled} />
+              <a href="javascript:void(0);" onClick={updateOtp} name='resendOTP'disabled={!resendEnabled}>Resend Otp</a>
+              {/* <a href="javascript:void(0);">Hello</a> */}
+              {/* <Button onClick={updateOtp} name="Resend OTP" disabled={!resendEnabled} /> */}
               <p className='timer'>{!resendEnabled ? `Resend OTP after 60 sec` : "You can resend OTP now"}</p>
             </div>
           </div>

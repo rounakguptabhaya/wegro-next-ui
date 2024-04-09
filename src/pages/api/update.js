@@ -1,6 +1,7 @@
 import { query } from "@/src/lib/db";
 import jwt from 'jsonwebtoken'
 import cookies from 'next-cookies';
+import { generateOTP } from "@/utils/otpcode";
 
 
 export default async function handler(req, res){
@@ -9,7 +10,8 @@ export default async function handler(req, res){
     
     if(req.method === "POST"){
         const phoneNumber = req.body.phone_number;
-        const otp = req.body.otp;
+        const otp = await generateOTP();
+        // console.log(otp);
         console.log(phoneNumber);
 
         const updateUser = await query({
@@ -18,6 +20,22 @@ export default async function handler(req, res){
         });
 
         if(updateUser.affectedRows){
+            const postData = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${process.env.BEARER_TOKEN}`
+                },
+                body: JSON.stringify({
+                    phone: phoneNumber,
+                    otp: otp
+                })
+            }
+
+            const otpRes = await fetch('https://www.wegro.app/api/send-otp',postData);
+
+            const response = await otpRes.json();
+
             message="success";
             const { token } = cookies({ req });
 

@@ -50,6 +50,24 @@ export default async function handler(req, res){
             });
 
             if(updateOtp.affectedRows){
+
+                const postData = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${process.env.BEARER_TOKEN}`
+                    },
+                    body: JSON.stringify({
+                        phone: phoneNumber,
+                        otp: otp
+                    })
+                }
+
+                const otpRes = await fetch('https://www.wegro.app/api/send-otp',postData);
+
+                const response = await otpRes.json();
+
+
                 message = "Success";
 
                 // Generate a new token with updated information (if needed)
@@ -91,8 +109,24 @@ export default async function handler(req, res){
             });
     
             if(addUser.insertId){
+                const postData = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${process.env.BEARER_TOKEN}`
+                    },
+                    body: JSON.stringify({
+                        phone: phoneNumber,
+                        otp: otp
+                    })
+                }
+
+                const otpRes = await fetch('https://www.wegro.app/api/send-otp',postData);
+
+                const response = await otpRes.json();
+
                 token = jwt.sign({phone_number:phoneNumber,otp_number:otp}, 'mySecreyKey', {expiresIn:'1h'});
-                message="success";
+                message="Success";
             }else{
                 message="error";
             }

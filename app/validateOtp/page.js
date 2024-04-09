@@ -5,6 +5,14 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import jwt from 'jsonwebtoken';
 
+import { alert, defaultModules } from '@pnotify/core';
+import '@pnotify/core/dist/PNotify.css';
+import * as PNotifyMobile from '@pnotify/mobile';
+import '@pnotify/mobile/dist/PNotifyMobile.css';
+import '@pnotify/core/dist/BrightTheme.css';
+
+
+defaultModules.set(PNotifyMobile, {});
 
 
 const validateOtp = () => {
@@ -29,13 +37,16 @@ const validateOtp = () => {
         const res = await fetch('http://localhost:3000/api/validate', postData);
         const response = await res.json();
 
-
+        alert({
+            text: "98% of users get OTP on WhatsApp within 1 minute.",
+        })
 
         const token = response.token;
         const decodedToken = jwt.decode(token);
 
         if(decodedToken.otp_validation === 1){
-            router.push('/home');
+
+            router.push('/watchlist');
         }
 
         console.log(decodedToken.phone_number);
@@ -74,7 +85,8 @@ const validateOtp = () => {
             const response = await res.json();
             console.log("Status Flag:-", response.status);
             if(response.message === "success"){
-                router.push('/home');
+
+                router.push('/watchlist');
             }
             else{
                 alert(response.message)
@@ -84,8 +96,8 @@ const validateOtp = () => {
 
       const handleUpdate = async () => {
         console.log("Resend OTP Button Pressed");
-        const updatedOtp = generateOTP();;
-        setOtpNumber(updatedOtp);
+        // const updatedOtp = generateOTP();;
+        // setOtpNumber(updatedOtp);
 
         const postData = {
             method:"POST",
@@ -94,7 +106,7 @@ const validateOtp = () => {
             },
             body: JSON.stringify({
                 phone_number: phoneNumber,
-                otp: updatedOtp,
+                // otp: updatedOtp,
             })
         }
 

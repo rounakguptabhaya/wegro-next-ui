@@ -97,13 +97,14 @@ import { MdDelete } from "react-icons/md";
 const WatchList = (props) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
-  const handleChange = (selectedOption) => {
-    setSelectedOption(selectedOption);
+  const handleChange = (option) => {
+    setSelectedOption(option);
+    handleClick(option);
   };
 
-  const handleClick = () => {
-    if (selectedOption) {
-      props.addStock(selectedOption.value);
+  const handleClick = (option) => {
+    if (option) {
+      props.addStock(option.value);
       setSelectedOption(null);
     }
   };
@@ -163,7 +164,7 @@ const WatchList = (props) => {
                   }}
                 />
               </div>
-              <Button onClick={handleClick} name="Add Company" />
+              {/* <Button onClick={handleClick} name="Add Company" /> */}
               <div className='your-watchlist'>
                   <h5>Your Watchlist</h5>
                   {props.watchlist.length > 0 ? 

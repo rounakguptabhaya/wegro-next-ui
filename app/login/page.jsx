@@ -7,6 +7,13 @@ import { useSearchParams } from 'next/navigation'
 
 import jwt from 'jsonwebtoken';
 
+
+import { alert, defaultModules } from '@pnotify/core';
+import '@pnotify/core/dist/PNotify.css';
+import * as PNotifyMobile from '@pnotify/mobile';
+import '@pnotify/mobile/dist/PNotifyMobile.css';
+import '@pnotify/core/dist/BrightTheme.css';
+
 const LoginPage = () => {
   
   // const [phoneNumber, setPhoneNumber] = useState('');
@@ -41,7 +48,7 @@ const LoginPage = () => {
     console.log(response)
     if(response.token){
       console.log(response.token);
-      router.push('/home');
+      router.push('/watchlist');
     }
   }
 
@@ -75,7 +82,13 @@ const LoginPage = () => {
 
         const response = await res.json();
         console.log("Response from does user exists?::", response);
-        router.push('/validateOtp');
+        
+        if(response.message === "Success"){
+          router.push('/validateOtp');
+        }
+        
+
+        // router.push('/validateOtp');
 
         // history.push('/validateOtp/page');
         const token = response.token;

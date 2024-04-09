@@ -17,9 +17,49 @@ export default async function handler(req, res){
         // console.log(token);
         userToken = token;
         // console.log(userToken);
-        // decoded_token = jwt.decode(userToken)
+        decoded_token = jwt.decode(userToken)
         // console.log(decoded_token);
         if(token){
+
+            const phoneNumber = decoded_token.phone_number;
+
+            const loggedInUser = await query({
+                query:"SELECT * FROM subscribers WHERE mobileNumber = ?",
+                values: [phoneNumber],
+            })
+
+            if(loggedInUser.length > 0){
+                const status = loggedInUser[0].status;
+
+                if(status === 0){
+                    const postData = {
+                        method:"POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${process.env.BEARER_TOKEN}`
+                        },
+                        body: JSON.stringify({
+                            phone: phoneNumber,
+                            welcomeMsg: "1",
+                        })
+                    }
+
+                    const res = await fetch('https://wegro.app/api/send-message', postData);
+
+                    const response = await res.json();
+
+                    if(response.status === 200){
+                        const updateStatus = await query({
+                            query: "UPDATE subscribers SET status = ? WHERE mobileNumber = ?",
+                            values: [1, phoneNumber],
+                        });
+                    }
+                    // console.log("Wegro api response::",response);
+
+                    
+                }
+            }
+
             const companies = await query({
                 query: "SELECT companyName, symbol, isinNumber, scripCode from company",
                 values: [],
@@ -97,6 +137,13 @@ export default async function handler(req, res){
 
         const phoneNumber = decoded_token.phone_number;
 
+        const getCompanyName = await query({
+            query: "SELECT companyName from company where companyId = ?",
+            values: [id]
+        })
+
+        const companyName = getCompanyName[0].companyName;
+
         const getsubscriberId = await query({
             query: "SELECT subscriberId from subscribers WHERE mobileNumber = ?",
             values: [phoneNumber],
@@ -116,7 +163,7 @@ export default async function handler(req, res){
             message = "Error";
         }
 
-        res.status(200).json({message:message, deletedCompanyId: id});
+        res.status(200).json({message:message, deletedCompanyId: id, companyName: companyName});
 
     }
 }
