@@ -118,6 +118,10 @@ const WatchList = (props) => {
     props.deleteCompany(id);
   }
 
+  const deleteAll = () => {
+    props.onDeleteAll();
+  }
+
   const customFilterOption = (option, rawInput) => {
     const inputValue = rawInput.toLowerCase();
     const optionLabel = option.label ? option.label.toLowerCase() : '';
@@ -166,7 +170,11 @@ const WatchList = (props) => {
               </div>
               {/* <Button onClick={handleClick} name="Add Company" /> */}
               <div className='your-watchlist'>
-                  <h5>Your Watchlist</h5>
+                  <div className='watchlist-header-container'>
+                    <h5>Your Watchlist</h5>
+                    <a href='javascript:void(0);' onClick={deleteAll}>Delete All</a>
+                  </div>
+                  
                   {props.watchlist.length > 0 ? 
                   
                   props.watchlist.map((company,idx) => {

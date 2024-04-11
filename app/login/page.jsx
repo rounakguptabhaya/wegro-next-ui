@@ -15,7 +15,7 @@ import '@pnotify/mobile/dist/PNotifyMobile.css';
 import '@pnotify/core/dist/BrightTheme.css';
 
 const LoginPage = () => {
-  
+  console.log("Login Component");
   // const [phoneNumber, setPhoneNumber] = useState('');
   // const phoneNumberRef = useRef();
 
@@ -86,7 +86,7 @@ const LoginPage = () => {
         if(response.message === "Success"){
           router.push('/validateOtp');
         }
-        
+
 
         // router.push('/validateOtp');
 

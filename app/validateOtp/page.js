@@ -16,6 +16,8 @@ defaultModules.set(PNotifyMobile, {});
 
 
 const validateOtp = () => {
+    console.log("Validate Otp component");
+
     const [phoneNumber,setPhoneNumber] = useState("");
     const [otpNumber,setOtpNumber] = useState("");
     const router = useRouter();

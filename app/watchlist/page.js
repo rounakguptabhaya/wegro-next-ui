@@ -17,12 +17,14 @@ defaultModules.set(PNotifyMobile, {});
 
 const WatchListPage = () => {
 
+    console.log("Component rendered");
+
   const [companies,setCompanies] = useState([]); 
   const [watchlist, setWatchlist] = useState([]);
-
   
 
   
+
   
   const [token, setToken] = useState("");
 
@@ -80,6 +82,30 @@ const WatchListPage = () => {
 
 
   }
+
+  const handleDeleteAll = async() => {
+    const postData = {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    }
+
+    const res = await fetch('http://localhost:3000/api/userwatchlist',postData);
+
+    const response = await res.json();
+
+    console.log(response);
+
+    if(response.message === "Success"){
+        setWatchlist([]);
+        alert({
+            text: "Your full watchlist deleted successfully."
+        });
+
+    }
+  }
+
 
   const handleAddStock = async(companyName) => {
     console.log(companyName);
@@ -140,12 +166,18 @@ const WatchListPage = () => {
   }
 
   useEffect(() => {
-    getCompanies();
-    handleUserWatchList();
+    console.log("Effect triggered");
+
+    const fetchData = async () => {
+        await getCompanies(); // Wait for getCompanies() to complete
+        handleUserWatchList(); // Call handleUserWatchList() after getCompanies() completes
+      };
+    
+      fetchData();
   },[]);
 
   return (
-        <WatchList addStock = {handleAddStock}  companyList = {companies} watchlist = {watchlist} deleteCompany={deleteUserCompany}/>
+        <WatchList addStock = {handleAddStock}  companyList = {companies} watchlist = {watchlist} deleteCompany={deleteUserCompany} onDeleteAll={handleDeleteAll}/>
   )
 }
 

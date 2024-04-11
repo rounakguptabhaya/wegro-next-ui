@@ -8024,3 +8024,11 @@
   cursor: pointer;
 }
 
+.watchlist-header-container{
+  display: flex;
+  justify-content: space-between;
+}
+
+.watchlist-header-container a{
+  padding-top: 4px;
+}
