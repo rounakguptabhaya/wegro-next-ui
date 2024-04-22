@@ -92,6 +92,8 @@ import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import Button from './Button';
 import { MdDelete } from "react-icons/md";
+import Link from "next/link"
+
 
 
 const WatchList = (props) => {
@@ -114,12 +116,21 @@ const WatchList = (props) => {
 //   }
 
   const handleDelete = (id) => {
-    console.log(id);
+    // console.log(id);
     props.deleteCompany(id);
+  }
+
+  const handleLanguageChange = (e) => {
+    const selectedLanguage = e.target.value;
+    props.changeLanguage(selectedLanguage);
   }
 
   const deleteAll = () => {
     props.onDeleteAll();
+  }
+
+  const handleCategory = (category) => {
+    props.handleCategory(category);
   }
 
   const customFilterOption = (option, rawInput) => {
@@ -156,7 +167,14 @@ const WatchList = (props) => {
             <h3>Watchlist</h3>
             <div className="register-form" style={{ position: 'relative' }}>
               <div className="form-group">
-                <label>Search Company</label>
+                <div className='watchlist-header-container'>
+                  <label>Search Company</label>
+                  <select name='languages' id='languages' value={props.defaultLang} onChange={handleLanguageChange}>
+                    <option value="1">English</option>
+                    <option value="0">Hindi</option>
+                  </select>  
+                </div>
+                
                 <Select
                   value={selectedOption}
                   onChange={handleChange}
@@ -169,9 +187,16 @@ const WatchList = (props) => {
                 />
               </div>
               {/* <Button onClick={handleClick} name="Add Company" /> */}
+              <div className='categories'>
+                 {props.categories.map((category,idx) => {
+                   return <a key={idx} href='javascript:void(0)' className='category-btn' onClick={() => {handleCategory(category.categoryId)}}>{category.categoryName}</a>
+                 })}
+                
+              </div>
+
               <div className='your-watchlist'>
                   <div className='watchlist-header-container'>
-                    <h5>Your Watchlist</h5>
+                    <h5>Your Watchlist {`(${props.total}/500)`}</h5>
                     <a href='javascript:void(0);' onClick={deleteAll}>Delete All</a>
                   </div>
                   
@@ -195,7 +220,12 @@ const WatchList = (props) => {
                   )
                   }
               </div>
+              
             </div>
+
+            <div className='watchlist-footer'>
+                <Link href='/upgradePlan' className='upgrade-btn'>Upgrade Your Plan</Link>
+              </div>
           </div>
         </div>
       </section>

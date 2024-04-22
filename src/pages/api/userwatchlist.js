@@ -22,13 +22,14 @@ export default async function handler(req, res){
         const phoneNumber = decoded_token.phone_number;
         // console.log(decoded_token);
         if(token){
-            const subscriberId = await query({
-                query: "SELECT subscriberId from subscribers WHERE mobileNumber = ?",
+            const alertLangId = await query({
+                query: "SELECT alertLangId from subscribers WHERE mobileNumber = ?",
                 values: [phoneNumber],
             })
 
             // console.log(subscriberId[0].subscriberId);
 
+            const language = alertLangId[0].alertLangId;
             // const watchlist = await query({
             //     query: "SELECT companyId FROM subscriberscompany WHERE subscriberId = ?",
             //     values: [subscriberId[0].subscriberId],
@@ -39,11 +40,13 @@ export default async function handler(req, res){
                 values: [phoneNumber]
             })
 
-            console.log(watchlist);
+            // console.log(watchlist);
+
+            const totalAdded = watchlist.length;
             
 
 
-            res.status(200).json({message:"Success", watchlist:watchlist});
+            res.status(200).json({message:"Success", watchlist:watchlist, totalAdded: totalAdded, language: language});
         }
         else{
             res.status(403).json({message:"Unauthorized"})
@@ -51,39 +54,39 @@ export default async function handler(req, res){
         
     }
 
-    if(req.method === "POST"){
-        const { token } = cookies({ req });
+    // if(req.method === "POST"){
+    //     const { token } = cookies({ req });
 
-        userToken = token;
-        decoded_token = jwt.decode(userToken);
-        const companyName = req.body.companyName;
-        const phoneNumber = decoded_token.phone_number;
-        // console.log(decoded_token);
-        //check if company already added ----> Pending
+    //     userToken = token;
+    //     decoded_token = jwt.decode(userToken);
+    //     const companyName = req.body.companyName;
+    //     const phoneNumber = decoded_token.phone_number;
+    //     // console.log(decoded_token);
+    //     //check if company already added ----> Pending
 
-        //get subscriber id from subscribers table
-        const getsubscriberId = await query({
-            query: "SELECT subscriberId from subscribers WHERE mobileNumber = ?",
-            values: [phoneNumber],
-        });
+    //     //get subscriber id from subscribers table
+    //     const getsubscriberId = await query({
+    //         query: "SELECT subscriberId from subscribers WHERE mobileNumber = ?",
+    //         values: [phoneNumber],
+    //     });
 
-        //get company id from company table
-        const getcompanyId = await query({
-            query: "SELECT companyId from company where companyName = ?",
-            values: [companyName],
-        });
+    //     //get company id from company table
+    //     const getcompanyId = await query({
+    //         query: "SELECT companyId from company where companyName = ?",
+    //         values: [companyName],
+    //     });
 
-        console.log(getsubscriberId[0].subscriberId,getcompanyId[0].companyId);
-        const subscriberId = getsubscriberId[0].subscriberId;
-        const companyId = getcompanyId[0].companyId;
-        //add company to user's company table
-        const addCompany = await query({
-            query: "INSERT INTO subscriberscompany (subscriberId,companyId) VALUES (?,?)",
-            values: [subscriberId, companyId],
-        })
+    //     // console.log(getsubscriberId[0].subscriberId,getcompanyId[0].companyId);
+    //     const subscriberId = getsubscriberId[0].subscriberId;
+    //     const companyId = getcompanyId[0].companyId;
+    //     //add company to user's company table
+    //     const addCompany = await query({
+    //         query: "INSERT INTO subscriberscompany (subscriberId,companyId) VALUES (?,?)",
+    //         values: [subscriberId, companyId],
+    //     })
 
-        res.status(200).json({message:"Success"});
-    }
+    //     res.status(200).json({message:"Success"});
+    // }
 
     if(req.method === "DELETE"){
         const id = req.body.companyId;

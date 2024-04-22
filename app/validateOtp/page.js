@@ -44,16 +44,22 @@ const validateOtp = () => {
         })
 
         const token = response.token;
-        const decodedToken = jwt.decode(token);
-
-        if(decodedToken.otp_validation === 1){
-
-            router.push('/watchlist');
+        if(!token){
+            router.push('/login');
         }
+        else{
+            const decodedToken = jwt.decode(token);
 
-        console.log(decodedToken.phone_number);
-        setPhoneNumber(decodedToken.phone_number);
-        setOtpNumber(decodedToken.otp_number);
+            if(decodedToken.otp_validation === 1){
+
+                router.push('/watchlist');
+            }
+
+            console.log(decodedToken.phone_number);
+            setPhoneNumber(decodedToken.phone_number);
+            setOtpNumber(decodedToken.otp_number);
+        }
+        
 
     }
  

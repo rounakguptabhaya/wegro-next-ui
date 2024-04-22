@@ -23,7 +23,7 @@ export default async function handler(req, res){
             const phoneNumber = decoded_token.phone_number;
 
             const loggedInUser = await query({
-                query:"SELECT * FROM subscribers WHERE mobileNumber = ?",
+                query:"SELECT status FROM subscribers WHERE mobileNumber = ?",
                 values: [phoneNumber],
             })
 

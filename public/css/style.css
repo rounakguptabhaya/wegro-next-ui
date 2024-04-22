@@ -8027,8 +8027,143 @@
 .watchlist-header-container{
   display: flex;
   justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .watchlist-header-container a{
   padding-top: 4px;
+}
+
+.not-found-container{
+  margin: 0px;
+  background-color: var(--color-four);
+}
+
+.watchlist-footer{
+  display: flex;
+  justify-content: right;
+  border-radius: 10px;
+}
+
+
+.upgrade-btn{
+  background-color: var(--main-color);
+  color: white;
+  padding: 5px 10px;
+  margin-top: 1rem;
+}
+
+.upgrade-btn:hover{
+  background-color: rgb(95, 16, 170);
+  transition: 0.2s;
+  color: white;
+}
+
+
+
+#languages{
+  width: max-content;
+  height: max-content;
+}
+
+.categories{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  /* display: grid;
+  grid-template-columns: repeat(3,auto);
+  grid-auto-columns: auto;
+  gap: 2px;  */
+}
+
+.category-btn{
+  background-color: var(--color-ten);
+  border: 1px solid var(--color-ten);
+  padding: 5px 10px;
+  border-radius: 8px;
+  color: white;
+}
+
+.category-btn:hover{
+  background-color: rgb(44, 44, 44);
+  transition: 0.2s;
+  border: 1px solid var(--main-color);
+  color: white;
+}
+
+.price-header{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.toggle{
+  display: flex;
+  gap: 10px;
+  border: solid 1px var(--main-color);
+  padding: 4px 10px;
+  border-radius: 5px;
+}
+
+.toggle-item a {
+  color: white;
+  font-size: 0.9rem;
+  padding: 2px 3px;
+}
+
+.toggle-item a:hover{
+  background-color: var(--main-color);
+  transform: 0.2s;
+  padding: 2px 3px;
+  border-radius: 5px;
+}
+
+.active{
+  background-color: var(--main-color);
+  padding: 2px 3px;
+  border-radius: 5px;
+}
+
+@media (min-width: 992px) {
+  .pricing-container{
+    margin-left: 33%;
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .pricing-container{
+    margin-left: 25%;
+    width: 100%;
+  }
+}
+
+.profile-container{
+  background-color: #0F0F0F;
+}
+
+.profile-header h3,h4{
+  color: white;
+}
+
+.profile-body label{
+  color: white;
+  margin-bottom: 5px;
+}
+
+.profile-body input{
+  margin-bottom: 1rem;
+}
+
+.profile-wrapper{
+  margin-bottom: 2rem;
+}
+
+
+.edit-logo{
+  height: 1.5rem;
+  width: 1.5rem;
+  margin-right: 5px;
 }

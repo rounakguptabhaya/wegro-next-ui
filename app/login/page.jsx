@@ -15,7 +15,7 @@ import '@pnotify/mobile/dist/PNotifyMobile.css';
 import '@pnotify/core/dist/BrightTheme.css';
 
 const LoginPage = () => {
-  console.log("Login Component");
+  // console.log("Login Component");
   // const [phoneNumber, setPhoneNumber] = useState('');
   // const phoneNumberRef = useRef();
 
@@ -25,7 +25,7 @@ const LoginPage = () => {
 
   const referralId = searchParams.get('referralId');
 
-  console.log("Parameter::",referralId);
+  // console.log("Parameter::",referralId);
 
   
 
@@ -45,9 +45,9 @@ const LoginPage = () => {
     const res = await fetch('http://localhost:3000/api/users',postData);
 
     const response = await res.json();
-    console.log(response)
+    // console.log(response)
     if(response.token){
-      console.log(response.token);
+      // console.log(response.token);
       router.push('/watchlist');
     }
   }
@@ -55,14 +55,14 @@ const LoginPage = () => {
   const handlePhoneNumberChange = async (number) => {
     // setPhoneNumber(number);
     // phoneNumberRef.current = number;
-    console.log("Page.jsx useRef::",number);
+    // console.log("Page.jsx useRef::",number);
 
     // const otp = generateOTP();
     
     const alphabetRegex = /[a-zA-Z]/;
 
     if (alphabetRegex.test(number)) {
-        console.log("The string contains alphabets");
+        // console.log("The string contains alphabets");
 
     } else {
         // console.log(number,otp);
@@ -81,7 +81,7 @@ const LoginPage = () => {
         const res = await fetch('http://localhost:3000/api/users', postData);
 
         const response = await res.json();
-        console.log("Response from does user exists?::", response);
+        // console.log("Response from does user exists?::", response);
         
         if(response.message === "Success"){
           router.push('/validateOtp');

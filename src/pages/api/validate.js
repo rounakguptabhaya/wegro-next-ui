@@ -1,6 +1,11 @@
 import { query } from "@/src/lib/db";
 import jwt from 'jsonwebtoken'
 import cookies from 'next-cookies';
+import crypto from 'crypto';
+import {SignJWT} from 'jose';
+
+import { getJwtSecretKey } from "@/src/lib/auth";
+
 
 
 
@@ -10,6 +15,9 @@ export default async function handler(req, res){
     let users;
     let message;
     let status;
+
+    // const key = crypto.createSecretKey(Buffer.from('mySecreyKey', 'utf-8'));
+
 
 
     // console.log('Cookies:', req.cookies);
@@ -30,7 +38,7 @@ export default async function handler(req, res){
         console.log(phoneNumber,otp);
 
         const loginUser = await query({
-            query: "SELECT * FROM subscribers WHERE mobileNumber = ? AND otp = ?",
+            query: "SELECT mobileNumber FROM subscribers WHERE mobileNumber = ? AND otp = ?",
             values: [phoneNumber, otp],
         });
 
@@ -54,7 +62,19 @@ export default async function handler(req, res){
             otp: otp,
         };
         
-        const token = jwt.sign({ phone_number: phoneNumber, otp_number: otp, otp_validation: 1}, 'mySecreyKey', { expiresIn: '1h' });
+        // const token = jwt.sign({ phone_number: phoneNumber, otp_number: otp, otp_validation: 1}, 'mySecreyKey', { expiresIn: '1h' });
+
+        const payload = {
+            phone_number: phoneNumber,
+            otp_number: otp,
+            otp_validation: 1
+        };
+
+
+        const token = await new SignJWT(payload)
+                    .setProtectedHeader({ alg: 'HS256' }) // Specify the algorithm
+                    .setExpirationTime('1h') // Set the expiration time
+                    .sign(new TextEncoder().encode(getJwtSecretKey())); // Sign the token with your secret key
 
         res.setHeader('Set-Cookie', `token=${token};Max-Age=3600; Path=/; HttpOnly`);
 
