@@ -8144,6 +8144,11 @@
   background-color: #0F0F0F;
 }
 
+.profile-header{
+  display: flex;
+  justify-content: space-between;
+}
+
 .profile-header h3,h4{
   color: white;
 }
@@ -8166,4 +8171,36 @@
   height: 1.5rem;
   width: 1.5rem;
   margin-right: 5px;
+}
+
+.profile-body-header{
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-footer{
+  display: flex;
+  margin-top: 2rem;
+}
+
+.preferences{
+  margin-top: 4rem;
+}
+
+
+.preferences p{
+  color: white;
+}
+
+.preference{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+
+.form-switch .form-check-input {
+  width: 3rem; /* Adjust the width as needed */
+  height: 1.5rem; /* Adjust the height as needed */
 }
