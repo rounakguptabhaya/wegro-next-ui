@@ -8028,6 +8028,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+  margin-top: 1rem;
 }
 
 .watchlist-header-container a{
@@ -8046,14 +8047,16 @@
 }
 
 
-.upgrade-btn{
+.btn-sm{
   background-color: var(--main-color);
   color: white;
   padding: 5px 10px;
-  margin-top: 1rem;
+  /* margin-top: 1rem; */
+  /* z-index: 1000; */
 }
 
-.upgrade-btn:hover{
+
+.btn-sm:hover{
   background-color: rgb(95, 16, 170);
   transition: 0.2s;
   color: white;
@@ -8203,4 +8206,63 @@
 .form-switch .form-check-input {
   width: 3rem; /* Adjust the width as needed */
   height: 1.5rem; /* Adjust the height as needed */
+}
+
+/* .file-name{
+  margin-top: 1rem;
+  margin-bottom: 0;
+} */
+
+.file-upload-header{
+  display: flex;
+  gap: 1rem;
+}
+
+.file-upload-header label{
+  min-width: 8rem;
+  max-width: 8rem;
+  overflow-x: hidden;
+  border: solid white;
+  border-width: 1px;
+  padding: 5px 10px;
+  text-overflow: ellipsis;
+  border-radius: 5px;
+}
+
+.file-upload-container{
+  max-width: 10rem;
+  min-width: 10rem;
+  margin-bottom: 1rem;
+}
+
+.file-selected{
+  display: flex;
+  /* gap: 1rem; */
+  border: solid rgba(255, 255, 255, 0.541);
+  border-width: 0.5px;
+  border-radius: 5px;
+  width: fit-content;
+  height: fit-content;
+  padding: 3px 10px;
+}
+
+.file-handle-btn{
+  background: none;
+}
+
+.send{
+  color: white;
+}
+
+.cancel{
+  color: red;
+}
+
+.file-selected-container{
+  display: flex;
+
+}
+
+.file-selected-btn{
+  display: flex;
 }

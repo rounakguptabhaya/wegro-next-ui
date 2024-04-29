@@ -1,103 +1,22 @@
-// import React, { useState } from 'react';
-// import Input from './Input';
-// import Button from './Button';
-
-// const WatchList = (props) => {
-//   const [value, setValue] = useState('');
-//   const [inputFocused, setInputFocused] = useState(false);
-
-//   const handleClick = () => {
-//     setValue('');
-//     props.addStock(value);
-//   };
-
-//   const setCompanyName = (companyName) => {
-//     setValue(companyName);
-//   };
-
-//   return (
-//     <div className="page-wrapper">
-//       <section className="register-one">
-//         <div className="auto-container">
-//           <div className="inner-container">
-//             <h3>Watchlist</h3>
-//             <div className="register-form">
-//               <div className="form-group">
-//                 <label>Search Company</label>
-//                 <input
-//                   type="text"
-//                   name="search-company"
-//                   value={value}
-//                   onChange={(e) => setValue(e.target.value)}
-//                   placeholder="Search Company"
-//                   required={true}
-//                   onFocus={() => setInputFocused(true)}
-//                   onBlur={() => setInputFocused(false)}
-//                 />
-//                 {inputFocused && (
-//                   <div className="search-result">
-//                     {props.companyList.length > 0 ? (
-//                       props.companyList
-//                         .filter((company) => {
-//                           const searchTerm = value.toLowerCase();
-//                           const companyName = company.companyName.toLowerCase();
-//                           const isinNumber = company.isinNumber.toLowerCase();
-//                           const symbol = company.symbol.toLowerCase();
-//                           const scripCode = company.scripCode.toString().toLowerCase();
-
-//                           return (
-//                             companyName !== searchTerm &&
-//                             companyName.startsWith(searchTerm) ||
-//                             isinNumber.startsWith(searchTerm) ||
-//                             symbol.startsWith(searchTerm) ||
-//                             scripCode.startsWith(searchTerm)
-//                           );
-//                         })
-//                         .map((company, idx) => {
-//                           return (
-//                             <div
-//                               key={idx}
-//                               className="search-item"
-//                               onClick={() => {
-//                                 setCompanyName(company.companyName);
-//                               }}
-//                             >
-//                               <p>{company.companyName}</p>
-//                             </div>
-//                           );
-//                         })
-//                     ) : (
-//                       <div className="search-item">
-//                         <p>Loading...</p>
-//                       </div>
-//                     )}
-//                   </div>
-//                 )}
-
-//                 <div className='added-stocks'>
-//                     <p>ABB India Limited</p>
-//                 </div>
-//               </div>
-//               <Button onClick={handleClick} name="Add Company" />
-//             </div>
-//           </div>
-//         </div>
-//       </section>
-//     </div>
-//   );
-// };
-
-// export default WatchList;
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import Button from './Button';
 import { MdDelete } from "react-icons/md";
 import Link from "next/link"
+import { FaArrowUp } from "react-icons/fa";
+import { MdCancel } from "react-icons/md";
+import Papa from 'papaparse';
+
+
 
 
 
 const WatchList = (props) => {
   const [selectedOption, setSelectedOption] = useState(null);
+  const [fileName, setFileName] = useState("No file Selected");
+  const [selectedFile, setSelectedFile] = useState([]);
+
+
 
   const handleChange = (option) => {
     setSelectedOption(option);
@@ -114,6 +33,39 @@ const WatchList = (props) => {
 //   const getUserWatchList = () => {
 //     props.getWatchList();
 //   }
+
+  // const handleFile = (event) => {
+  //   const file = event.target.files[0];
+  //   console.log(file);
+  //   if (file && (file.type === 'application/vnd.ms-excel' || file.type === 'text/csv' || file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
+  //     setSelectedFile(file);
+  //   } else {
+  //     setSelectedFile(null);
+  //     alert('Please select a valid Excel or CSV file.');
+  //   }
+  // }
+
+  const handleFile = (event) => {
+    const file = event.target.files[0];
+    if (file && (file.type === 'application/vnd.ms-excel' || file.type === 'text/csv' || file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
+      setFileName(file.name);
+      Papa.parse(file, {
+        header: true,
+        complete: (results) => {
+          setSelectedFile(results.data);
+        },
+      });
+    } 
+  };
+
+  const handleUpload = async () => {
+    console.log(selectedFile.length ? console.log(selectedFile) : console.log("No file Selected"))
+    props.handleUpload(selectedFile);
+  }
+
+  const handleCancel = () => {
+    setSelectedFile(null)
+  }
 
   const handleDelete = (id) => {
     // console.log(id);
@@ -168,7 +120,24 @@ const WatchList = (props) => {
             <div className="register-form" style={{ position: 'relative' }}>
               <div className="form-group">
                 <div className='watchlist-header-container'>
-                  <label>Search Company</label>
+                  {/* <button className='btn-sm' >Upload CAS(.csv or .xls) File</button> */}
+                  {/* <button type="button" class="btn btn-secondary btn-sm" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
+                  sagittis lacus vel augue laoreet rutrum faucibus.">
+                      Upload CAS(.csv or .xls) File
+                  </button> */}
+                  <div className='file-upload-container'>
+                    <div className='file-upload-header'>
+                      <label className='file-name'>{selectedFile ? fileName : "No file Selected"}</label>   
+                      <input type='file' id='upload' onChange={handleFile}/>
+                    </div>
+                    <div className='file-selected-container'>
+                        <div className='file-selected-btn'>
+                          <button className='btn-sm' onClick={handleUpload}>Upload</button>4
+                          <button className='btn-sm' onClick={handleCancel}>Cancel</button>
+                        </div>
+                        
+                    </div>
+                  </div>
                   <select name='languages' id='languages' value={props.defaultLang} onChange={handleLanguageChange}>
                     <option value="1">English</option>
                     <option value="0">Hindi</option>
@@ -224,7 +193,7 @@ const WatchList = (props) => {
             </div>
 
             <div className='watchlist-footer'>
-                <Link href='/upgradePlan' className='upgrade-btn'>Upgrade Your Plan</Link>
+                <Link href='/upgradePlan' className='btn-sm'>Upgrade Your Plan</Link>
               </div>
           </div>
         </div>

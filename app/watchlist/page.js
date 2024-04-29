@@ -262,6 +262,44 @@ const WatchListPage = () => {
     // console.log(companies);
   }
 
+  const handleUpload = async(selectedFile) => {
+    if(!selectedFile){
+        alert("No file selected");
+      }
+      const postData = {
+        method:"POST",
+        headers:{
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          file: selectedFile,
+        }),
+      }
+      const res = await fetch('http://localhost:3000/api/import', postData);
+  
+      const response = await res.json();
+  
+      if(response.message === "Success"){
+        // console.log(response.companies);
+        setWatchlist(response.watchlist);
+        setTotalCompanies(response.totalAdded)
+
+        if(response.companyAddStatus){
+            alert({
+                text: response.companyAddStatus,
+                delay: 1000
+            });
+        }
+        else{
+            alert({
+                text:"Companies successfully added in your watchlist.",
+                delay:1000
+            })
+        }
+        
+    }
+  }
+
   useEffect(() => {
     // console.log("Effect triggered");
 
@@ -293,7 +331,7 @@ const WatchListPage = () => {
     if(loading){
         return <Loading />
       }else if(auth){
-        return <WatchList addStock = {handleAddStock}  companyList = {companies} watchlist = {watchlist} deleteCompany={deleteUserCompany} onDeleteAll={handleDeleteAll} total={totalCompanies} changeLanguage = {handleChangeLanguage} defaultLang={defaultLanguage} categories={categories} handleCategory={handleCategory}/>
+        return <WatchList addStock = {handleAddStock}  companyList = {companies} watchlist = {watchlist} deleteCompany={deleteUserCompany} onDeleteAll={handleDeleteAll} total={totalCompanies} changeLanguage = {handleChangeLanguage} defaultLang={defaultLanguage} categories={categories} handleCategory={handleCategory} handleUpload={handleUpload}/>
       }else{
         return <NotFound />;
       }
