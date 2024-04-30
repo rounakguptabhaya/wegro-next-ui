@@ -21,6 +21,7 @@ export default async function handler(req, res) {
     const subscriberId = getSubscriberId[0].subscriberId;
 
     const entries = req.body.file;
+    console.log("Entries from CSV::",entries);
     const isinNumber = [];
 
     entries.map((entry) => {

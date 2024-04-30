@@ -6,6 +6,8 @@ import Link from "next/link"
 import { FaArrowUp } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import Papa from 'papaparse';
+import { parseCsv } from '@/src/helpers/parseCSV';
+import * as XLSX from "xlsx";
 
 
 
@@ -47,7 +49,8 @@ const WatchList = (props) => {
 
   const handleFile = (event) => {
     const file = event.target.files[0];
-    if (file && (file.type === 'application/vnd.ms-excel' || file.type === 'text/csv' || file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
+    console.log(file.type);
+    if (file && (file.type === 'application/vnd.ms-excel' || file.type === 'text/csv')) {
       setFileName(file.name);
       Papa.parse(file, {
         header: true,
@@ -55,16 +58,42 @@ const WatchList = (props) => {
           setSelectedFile(results.data);
         },
       });
+    }else if(file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+      setFileName(file.name);
+      const reader = new FileReader();
+      reader.readAsBinaryString(event.target.files[0]);
+      reader.onload = (event) => {
+        const data = event.target.result;
+        const workbook = XLSX.read(data, {type: "binary"});
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const parsedData = XLSX.utils.sheet_to_json(sheet);
+        setSelectedFile(parsedData);
+      }
     } 
   };
 
   const handleUpload = async () => {
-    console.log(selectedFile.length ? console.log(selectedFile) : console.log("No file Selected"))
-    props.handleUpload(selectedFile);
+    console.log(selectedFile.length ? console.log(selectedFile) : console.log("No file Selected"));
+    if(selectedFile.length){
+      const extension = fileName.split(".")[1];
+      // console.log(extension);
+      setFileName("No file Selected")
+      setSelectedFile([]);
+      props.handleUpload(selectedFile);
+      // if(extension === 'csv'){
+      //   props.handleUpload(selectedFile);
+      // }else if(extension === 'xlsx'){
+      //   props.handleExcelUpload(selectedFile);
+      // }
+      
+    }
+    
   }
 
   const handleCancel = () => {
-    setSelectedFile(null)
+    setFileName("No file Selected")
+    setSelectedFile([]);
   }
 
   const handleDelete = (id) => {
